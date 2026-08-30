@@ -21,6 +21,12 @@ LANGS = ["ko", "ko-orig", "ko-KR"]
 WIN_FORBIDDEN = r'[<>:"/\\|?*\x00-\x1f]'
 
 
+try:                                    # 윈도우 콘솔/리다이렉트 인코딩 방어
+    sys.stderr.reconfigure(errors='replace')
+except Exception:                       # noqa: BLE001
+    pass
+
+
 def log(msg):
     print(msg, file=sys.stderr, flush=True)
 
@@ -47,24 +53,49 @@ def safe_filename(title):
 
 
 def pick_caption_url(info):
-    """수동자막 우선, 없으면 자동생성자막. json3 포맷을 고른다."""
+    """수동자막 우선, 없으면 자동생성자막. json3 을 우선하고 vtt 로 폴백한다."""
+    fallback = None
     for source in (info.get('subtitles') or {}, info.get('automatic_captions') or {}):
         for lang in LANGS:
             for track in source.get(lang) or []:
                 if track.get('ext') == 'json3':
-                    return track['url']
-    return None
+                    return track['url'], 'json3'
+                if track.get('ext') in ('vtt', 'srv3') and fallback is None:
+                    fallback = (track['url'], track['ext'])
+    return fallback
 
 
-def fetch_events(url):
+def fetch_events(url, fmt):
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-    data = json.loads(urllib.request.urlopen(req, timeout=60).read())
+    raw = urllib.request.urlopen(req, timeout=60).read()
+    return parse_json3(raw) if fmt == 'json3' else parse_vtt(raw.decode('utf-8', 'replace'))
+
+
+def parse_json3(raw):
     out = []
-    for ev in data.get('events') or []:
-        segs = ev.get('segs') or []
-        text = ''.join(s.get('utf8', '') for s in segs).replace('\n', ' ').strip()
+    for ev in json.loads(raw).get('events') or []:
+        text = ''.join(s.get('utf8', '') for s in (ev.get('segs') or []))
+        text = text.replace('\n', ' ').strip()
         if text:
             out.append((ev.get('tStartMs', 0) / 1000.0, text))
+    return out
+
+
+def parse_vtt(text):
+    """WEBVTT 폴백. 자동자막의 중복 롤업 줄은 제거한다."""
+    cue = re.compile(r'(\d{2}):(\d{2}):(\d{2})[.,](\d{3})\s+-->')
+    out, start, seen = [], None, None
+    for line in text.split('\n'):
+        m = cue.search(line)
+        if m:
+            h, mm, ss, ms = (int(g) for g in m.groups())
+            start = h * 3600 + mm * 60 + ss + ms / 1000.0
+            continue
+        line = re.sub(r'<[^>]+>', '', line).strip()
+        if start is None or not line or line == seen or line.startswith(('WEBVTT', 'Kind:', 'Language:')):
+            continue
+        out.append((start, line))
+        seen = line
     return out
 
 
@@ -173,13 +204,16 @@ def main():
             skipped += 1
             continue
 
-        cap_url = pick_caption_url(info)
-        if not cap_url:
-            log(f'[{i}/{len(urls)}] 한국어 자막 없음: {info.get("title")}')
+        picked = pick_caption_url(info)
+        if not picked:
+            langs = sorted((info.get('automatic_captions') or {}) | (info.get('subtitles') or {}))
+            log(f'[{i}/{len(urls)}] 한국어 자막 없음 (제공 언어: {", ".join(langs[:8]) or "없음"}): '
+                f'{info.get("title")}')
             failed += 1
             continue
+        cap_url, cap_fmt = picked
         try:
-            events = fetch_events(cap_url)
+            events = fetch_events(cap_url, cap_fmt)
         except Exception as exc:                                  # noqa: BLE001
             log(f'[{i}/{len(urls)}] 자막 다운로드 실패: {exc}')
             failed += 1
