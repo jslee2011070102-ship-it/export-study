@@ -31,6 +31,15 @@
 | [docs/08_운송서류_BL.md](docs/08_운송서류_BL.md) | Master vs House B/L 판별 4법 / Surrender / D/O 흐름 |
 | [docs/09_대금결제_신용장.md](docs/09_대금결제_신용장.md) | T/T / 추심 / 신용장 2대 원칙 / 환어음 / 외국환거래법 |
 
+## 양식 (forms/)
+
+| 파일 | 내용 |
+|---|---|
+| [forms/README.md](forms/README.md) | 양식 목록 / 공식 서식 출처 / 서류 준비 순서 |
+| `forms/수출서류_상업송장_포장명세서.xlsx` | 입력 시트 1개로 C/I 와 P/L 동시 완성 |
+| `forms/오퍼시트_Offer_Sheet.xlsx` | Offer Sheet 템플릿 |
+| `forms/BOM_원재료명세서.xlsx` | FTA 원산지판정용 BOM. 비원산지 비중 자동 계산 |
+
 ## 데이터
 
 | 파일 | 내용 |
