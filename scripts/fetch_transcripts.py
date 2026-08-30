@@ -14,7 +14,7 @@ YouTube 를 정상적으로 볼 수 있는 PC 에서 실행할 것.
 
 이미 있는 파일은 건너뛴다. 중간에 끊겨도 다시 돌리면 이어서 받는다.
 """
-import argparse, json, os, re, sys, time, urllib.request
+import argparse, json, os, re, sys, time, urllib.error, urllib.request
 
 BLOCK_SEC = 25          # 자막을 묶는 단위. 옵시디언 클리퍼와 동일한 체감 분량
 LANGS = ["ko", "ko-orig", "ko-KR"]
@@ -65,9 +65,26 @@ def pick_caption_url(info):
     return fallback
 
 
-def fetch_events(url, fmt):
+TRANSIENT = {429, 500, 502, 503, 504}
+
+
+def fetch_events(url, fmt, retries=4):
+    """자막 다운로드. 502 등 일시적 오류는 backoff 후 재시도."""
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-    raw = urllib.request.urlopen(req, timeout=60).read()
+    for attempt in range(retries):
+        try:
+            raw = urllib.request.urlopen(req, timeout=60).read()
+            break
+        except urllib.error.HTTPError as exc:
+            if exc.code not in TRANSIENT or attempt == retries - 1:
+                raise
+            wait = 3 * (attempt + 1)
+            log(f'      HTTP {exc.code} — {wait}초 후 재시도 ({attempt + 1}/{retries - 1})')
+            time.sleep(wait)
+        except urllib.error.URLError:
+            if attempt == retries - 1:
+                raise
+            time.sleep(3 * (attempt + 1))
     return parse_json3(raw) if fmt == 'json3' else parse_vtt(raw.decode('utf-8', 'replace'))
 
 
