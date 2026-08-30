@@ -39,6 +39,7 @@
 | `forms/수출서류_상업송장_포장명세서.xlsx` | 입력 시트 1개로 C/I 와 P/L 동시 완성 |
 | `forms/오퍼시트_Offer_Sheet.xlsx` | Offer Sheet 템플릿 |
 | `forms/BOM_원재료명세서.xlsx` | FTA 원산지판정용 BOM. 비원산지 비중 자동 계산 |
+| `forms/공식서식/` | 원산지소명서 / 원산지(포괄)확인서 등 법정 별지서식 8종 (hwp+pdf) |
 
 ## 데이터
 
@@ -49,6 +50,7 @@
 | `data/playlists.json` | 채널 재생목록 12종과 소속 영상 |
 | `data/blog_index.json` | 영상과 연결된 공식 블로그 포스팅 색인 (본문 미저장) |
 | `data/need_transcript_urls.txt` | 자막 보강 대상 64편 URL 목록 (평문) |
+| `data/fta_psr.csv` | FTA 협정별 품목별 원산지결정기준 4,831행 (6개 협정) |
 
 ## 재수집
 
