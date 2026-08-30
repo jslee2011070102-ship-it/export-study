@@ -25,6 +25,7 @@
 | [docs/03_수출지식맵.md](docs/03_수출지식맵.md) | 영상에서 추출한 수출 절차/서류/코드 체계 정리 |
 | [docs/04_수출설명서_설계안.md](docs/04_수출설명서_설계안.md) | 수출설명서 목차안 + 문서자동화 대상 정의 |
 | [docs/05_자료보강_요청목록.md](docs/05_자료보강_요청목록.md) | 자막/스크립트 추가 확보가 필요한 영상 64편 |
+| [docs/06_자막_일괄수집_가이드.md](docs/06_자막_일괄수집_가이드.md) | 자막 64편을 옵시디언 클리핑 포맷으로 일괄 수집하는 방법 |
 
 ## 데이터
 
@@ -39,7 +40,8 @@
 ## 재수집
 
 ```bash
-python3 scripts/collect_channel.py --out out
+python3 scripts/collect_channel.py --out out          # 채널 메타데이터 재수집
+python3 scripts/fetch_transcripts.py --urls data/need_transcript_urls.txt --out <볼트경로>   # 자막 일괄 수집
 ```
 
 YouTube 공개 페이지의 `ytInitialData` 와 innertube `browse`/`player` 엔드포인트만 사용. API 키/로그인 불필요.
