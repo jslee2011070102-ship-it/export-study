@@ -12,6 +12,7 @@ import argparse, csv, datetime as dt, json, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PSR  = os.path.join(ROOT, 'data', 'fta_psr.csv')
+공휴일표 = os.path.join(ROOT, 'data', '공휴일.csv')
 
 # ── 검증 완료된 법령 상수 (docs/11, docs/12) ────────────────────────
 적재기한일수 = 30                      # 관세법 제251조제1항
@@ -37,6 +38,29 @@ C그룹_조건   = ('CPT', 'CIP', 'CFR', 'CIF')    # 위험분기점과 비용�
 D그룹_조건   = ('DAP', 'DPU', 'DDP')           # 목적지 도착까지 매도인이 위험 부담
 인코텀즈_11 = ('EXW', 'FCA', 'FAS', 'FOB', 'CPT', 'CIP', 'CFR', 'CIF',
               'DAP', 'DPU', 'DDP')
+
+
+def _공휴일():
+    """관세법 제8조제3항 - 기한이 토/일/공휴일/대체공휴일/노동절이면 다음 날이 기한."""
+    s = set()
+    if os.path.exists(공휴일표):
+        with open(공휴일표, encoding='utf-8') as f:
+            for row in csv.DictReader(f):
+                s.add(dt.date.fromisoformat(row['일자']))
+    return s
+
+공휴일 = _공휴일()
+공휴일_수록연도 = {d.year for d in 공휴일}
+
+
+def 적재기한(수리일):
+    """수리일 + 30일. 말일이 휴일이면 관세법 제8조제3항에 따라 다음 개청일로 밀린다."""
+    d = 수리일 + dt.timedelta(days=적재기한일수)
+    밀림 = 0
+    while d.weekday() >= 5 or d in 공휴일:
+        d += dt.timedelta(days=1)
+        밀림 += 1
+    return d, 밀림
 
 
 class Report:
@@ -176,16 +200,20 @@ def validate(d, today):
     if 수리일:
         try:
             base = dt.date.fromisoformat(수리일)
-            기한 = base + dt.timedelta(days=적재기한일수)
+            기한, 밀림 = 적재기한(base)
             남은 = (기한 - today).days
+            휴일메모 = f' (30일째 {base + dt.timedelta(days=적재기한일수)} 이 휴일이라 {밀림}일 순연)' if 밀림 else ''
+            if 기한.year not in 공휴일_수록연도:
+                rep.warn('LOAD-05', f'{기한.year}년 공휴일이 data/공휴일.csv 에 없다. 계산값이 부정확할 수 있다.',
+                         '수출신고필증에 인쇄된 적재의무기한이 정본이다. 공휴일표를 갱신할 것.')
             if 남은 < 0:
-                rep.err('LOAD-01', f'적재기한이 {-남은}일 지났다. (기한 {기한})',
+                rep.err('LOAD-01', f'적재기한이 {-남은}일 지났다. (기한 {기한}){휴일메모}',
                         '200만원 이하 과태료 + 수출신고 수리 취소 가능. 연장은 기한 내에만 신청할 수 있다.')
             elif 남은 <= 7:
-                rep.err('LOAD-02', f'적재기한까지 {남은}일 남았다. (기한 {기한})',
+                rep.err('LOAD-02', f'적재기한까지 {남은}일 남았다. (기한 {기한}){휴일메모}',
                         '선적이 어려우면 지금 적재기간 연장승인을 신청할 것. 수리일부터 1년 범위에서 연장된다.')
             else:
-                rep.info('LOAD-03', f'적재기한 {기한} (D-{남은})')
+                rep.info('LOAD-03', f'적재기한 {기한} (D-{남은}){휴일메모}')
         except ValueError:
             rep.err('LOAD-04', f'수출신고수리일 형식이 잘못됐다: {수리일}', 'YYYY-MM-DD')
 

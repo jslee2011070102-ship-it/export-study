@@ -1,0 +1,179 @@
+{
+  "거래": {
+    "invoice_no": "SY-2026-0001",
+    "invoice_date": "2025-01-09",
+    "가격조건": "EXW 화성공장",
+    "인코텀즈버전": "Incoterms(R) 2020",
+    "결제조건": "T/T 100% in advance",
+    "결제방법코드": "TT",
+    "통화": "KRW",
+    "원산지": "REPUBLIC OF KOREA",
+    "선적항": "INCHEON, KOREA",
+    "도착항": "HO CHI MINH, VIETNAM",
+    "최종목적지": "HO CHI MINH, VIETNAM",
+    "운송방식": "항공",
+    "인도장소": "경기 화성시 동탄대로 123 공장"
+  },
+  "수출자": {
+    "상호": "(주)에스와이",
+    "주소1": "경기 화성시 동탄대로 123, A동 501호",
+    "대표자": "이지수",
+    "통관고유부호": "에스와이-1-15-1-01-3",
+    "해외거래처부호": ""
+  },
+  "수입자": {
+    "상호": "VINA BEAUTY TRADING CO",
+    "주소1": "HO CHI MINH, VIETNAM",
+    "해외거래처부호": "VNVINABEA0001V"
+  },
+  "품목": [
+    {
+      "품명": "SY FACIAL CLEANSING FOAM 150ML",
+      "규격": "SY FACIAL CLEANSING FOAM 150ML",
+      "hs_code": "3304.99",
+      "수량": 5,
+      "단위": "EA",
+      "단가": 7700,
+      "순중량_kg": 0.62,
+      "총중량_kg": 0.71
+    },
+    {
+      "품명": "SY ENZYME BUBBLE CLEANSER 160ML",
+      "규격": "SY ENZYME BUBBLE CLEANSER 160ML",
+      "hs_code": "3304.99",
+      "수량": 10,
+      "단위": "EA",
+      "단가": 7700,
+      "순중량_kg": 1.24,
+      "총중량_kg": 1.42
+    },
+    {
+      "품명": "SY HYDRATING TONER 200ML",
+      "규격": "SY HYDRATING TONER 200ML",
+      "hs_code": "3304.99",
+      "수량": 10,
+      "단위": "EA",
+      "단가": 12650,
+      "순중량_kg": 1.24,
+      "총중량_kg": 1.42
+    },
+    {
+      "품명": "SY HYDRATING EMULSION 200ML",
+      "규격": "SY HYDRATING EMULSION 200ML",
+      "hs_code": "3304.99",
+      "수량": 10,
+      "단위": "EA",
+      "단가": 12650,
+      "순중량_kg": 1.24,
+      "총중량_kg": 1.42
+    },
+    {
+      "품명": "SY REFRESH EMULSION 200ML",
+      "규격": "SY REFRESH EMULSION 200ML",
+      "hs_code": "3304.99",
+      "수량": 5,
+      "단위": "EA",
+      "단가": 11000,
+      "순중량_kg": 0.62,
+      "총중량_kg": 0.71
+    },
+    {
+      "품명": "SY EYE PATCH 1.4G*60EA",
+      "규격": "SY EYE PATCH 1.4G*60EA",
+      "hs_code": "3304.99",
+      "수량": 2,
+      "단위": "EA",
+      "단가": 11550,
+      "순중량_kg": 0.25,
+      "총중량_kg": 0.28
+    },
+    {
+      "품명": "SY RENEWAL CREAM 100G",
+      "규격": "SY RENEWAL CREAM 100G",
+      "hs_code": "3304.99",
+      "수량": 10,
+      "단위": "EA",
+      "단가": 10560,
+      "순중량_kg": 1.24,
+      "총중량_kg": 1.42
+    },
+    {
+      "품명": "SY PURE HYDRO EMULSION 180ML",
+      "규격": "SY PURE HYDRO EMULSION 180ML",
+      "hs_code": "3304.99",
+      "수량": 10,
+      "단위": "EA",
+      "단가": 11000,
+      "순중량_kg": 1.24,
+      "총중량_kg": 1.42
+    },
+    {
+      "품명": "SY CELL BOOSTING AMPOULE 75ML",
+      "규격": "SY CELL BOOSTING AMPOULE 75ML",
+      "hs_code": "3304.99",
+      "수량": 10,
+      "단위": "EA",
+      "단가": 11000,
+      "순중량_kg": 1.24,
+      "총중량_kg": 1.42
+    },
+    {
+      "품명": "SY ACTIVING CREAM 100G",
+      "규격": "SY ACTIVING CREAM 100G",
+      "hs_code": "3304.99",
+      "수량": 5,
+      "단위": "EA",
+      "단가": 14300,
+      "순중량_kg": 0.62,
+      "총중량_kg": 0.71
+    },
+    {
+      "품명": "SY ACTIVING EYE CREAM 30G",
+      "규격": "SY ACTIVING EYE CREAM 30G",
+      "hs_code": "3304.99",
+      "수량": 10,
+      "단위": "EA",
+      "단가": 11000,
+      "순중량_kg": 1.24,
+      "총중량_kg": 1.42
+    },
+    {
+      "품명": "SY BRIGHTENING MASK 32G",
+      "규격": "SY BRIGHTENING MASK 32G",
+      "hs_code": "3304.99",
+      "수량": 100,
+      "단위": "EA",
+      "단가": 770,
+      "순중량_kg": 12.4,
+      "총중량_kg": 14.21
+    },
+    {
+      "품명": "SY MODELING MASK TEATREE 1000G",
+      "규격": "SY MODELING MASK TEATREE 1000G",
+      "hs_code": "3304.99",
+      "수량": 5,
+      "단위": "EA",
+      "단가": 9900,
+      "순중량_kg": 0.62,
+      "총중량_kg": 0.71
+    },
+    {
+      "품명": "SY DAILY SHEET MASK 28G",
+      "규격": "SY DAILY SHEET MASK 28G",
+      "hs_code": "3304.99",
+      "수량": 50,
+      "단위": "EA",
+      "단가": 880,
+      "순중량_kg": 6.2,
+      "총중량_kg": 7.11
+    }
+  ],
+  "포장": {
+    "포장단위": "CT"
+  },
+  "통관": {
+    "물품소재지": "인천 중구 공항동로296번길 98-114 인천국제물류센터(주)",
+    "수출신고수리일": "2025-01-09",
+    "제조자": "(주)에스와이"
+  }
+}
