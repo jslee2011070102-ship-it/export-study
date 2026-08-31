@@ -20,6 +20,16 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 적재기한일수 = 30          # 관세법 제251조제1항
 인코텀즈_11 = ('EXW', 'FCA', 'FAS', 'FOB', 'CPT', 'CIP', 'CFR', 'CIF', 'DAP', 'DPU', 'DDP')
+# 관세청 통계부호 가격조건코드에 남아 있으나 인코텀즈 2020 규칙이 아닌 것
+폐지_인도조건 = {
+    'DAT': '2020 에서 DPU 로 대체',
+    'DDU': '2010 에서 DAP 로 대체',
+    'DES': '2010 에서 폐지 (2000년판)',
+    'DEQ': '2010 에서 폐지 (2000년판)',
+    'DAF': '2010 에서 폐지 (2000년판)',
+    'C&I': '인코텀즈 규칙이 아님 (운임 별도 + 보험 포함 관행 표기)',
+    'CNI': '인코텀즈 규칙이 아님',
+}
 
 # ── 텍스트 추출 ────────────────────────────────────────────────
 def 텍스트(path):
@@ -282,9 +292,16 @@ def 자체점검(필증):
     out = []
     조건 = 필증.get('인도조건')
     if 조건 and 조건 not in 인코텀즈_11:
-        out.append({'level': 'ERROR', 'code': 'DEC-20',
-                    'msg': f'인도조건 "{조건}" 은 인코텀즈 2020 의 11개 규칙이 아니다.',
-                    'fix': '별표1 작성요령 - EXW/FAS/FCA/FOB/CFR/CIF/CPT/CIP/DAP/DPU/DDP 만 사용.'})
+        if 조건 in 폐지_인도조건:
+            out.append({'level': 'WARN', 'code': 'DEC-20',
+                        'msg': f'인도조건 "{조건}" 은 폐지된 조건이다 ({폐지_인도조건[조건]}).',
+                        'fix': '관세청 통계부호 가격조건코드에는 남아 있어 신고는 통과할 수 있으나, '
+                               '고시 별표1 작성요령은 인코텀즈 2020 의 11개 규칙만 인정한다. '
+                               '계약서/송장의 조건부터 바꿀 것.'})
+        else:
+            out.append({'level': 'ERROR', 'code': 'DEC-20',
+                        'msg': f'인도조건 "{조건}" 은 인코텀즈 2020 의 11개 규칙이 아니다.',
+                        'fix': '별표1 작성요령 - EXW/FAS/FCA/FOB/CFR/CIF/CPT/CIP/DAP/DPU/DDP 만 사용.'})
     결제, 운임, 보험 = 필증.get('결제금액'), 필증.get('운임_KRW'), 필증.get('보험료_KRW')
     if 조건 in ('CFR', 'CPT', 'CIF', 'CIP') and not 운임:
         out.append({'level': 'ERROR', 'code': 'DEC-21',
