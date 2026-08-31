@@ -24,8 +24,14 @@
         "최종목적지":     {"type": "string"},
         "선박명":        {"type": "string", "default": "T.B.A."},
         "출항예정일":     {"type": "string", "default": "T.B.A."},
-        "운임":         {"type": "number", "description": "CFR/CIF 인 경우 필수. FOB 환산에 사용"},
-        "보험료":        {"type": "number", "description": "CIF 인 경우 필수"}
+        "운임":         {"type": "number", "description": "CFR/CPT/CIF/CIP 인 경우 필수. FOB 환산에 사용"},
+        "보험료":        {"type": "number", "description": "CIF/CIP 인 경우 필수"},
+        "운송방식":      {"type": "string", "enum": ["해상", "항공", "육상", "복합"],
+                         "description": "해상 전용 규칙(FAS/FOB/CFR/CIF) 적합성 판정에 사용"},
+        "컨테이너화물":   {"type": "boolean",
+                         "description": "true 이면 인도가 CY 에서 끝나므로 FOB/CFR/CIF 대신 FCA/CPT/CIP 가 정확"},
+        "인도장소":      {"type": "string",
+                         "description": "C 그룹의 위험분기점. 가격조건 뒤 지명은 비용분기점(목적지)이라 별도로 특정해야 함"}
       }
     },
     "수출자": {"$ref": "#/$defs/당사자"},
