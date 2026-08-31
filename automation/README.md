@@ -17,7 +17,8 @@
 |---|---|
 | `schema.json` | 거래 마스터 데이터 스키마. `forms/수출서류_상업송장_포장명세서.xlsx` 의 `[입력]` 시트와 1:1 대응 |
 | `validate.py` | **정합성 검증 엔진.** 서류를 만들기 전에 돌린다 |
-| `generate.py` | JSON → Commercial Invoice / Packing List (xlsx) |
+| `build_template.py` | **템플릿 생성.** 레이아웃/서식/수식/인쇄설정을 전부 여기서 정의 |
+| `generate.py` | JSON → 템플릿의 `[입력]` 시트를 채워 **xlsx + PDF 2장** 생성 |
 | `parse_declaration.py` | **수출신고필증(면장) 파서.** PDF → JSON + 송장 데이터와 대조 |
 | `samples/sample.json` | 정상 샘플 |
 | `samples/sample_broken.json` | 규칙이 실제로 잡는지 확인하는 오류 샘플 |
@@ -28,13 +29,40 @@
 
 ```bash
 pip install openpyxl
+apt-get install -y libreoffice-calc poppler-utils    # PDF 출력용
 
 # 1) 검증 - 오류가 있으면 종료코드 1
 python3 automation/validate.py automation/samples/sample.json
 
-# 2) 서류 생성
+# 2) 서류 생성 (xlsx + PDF)
 python3 automation/generate.py automation/samples/sample.json -o out/
+#   out/SY-2026-0001_수출서류.xlsx   [입력] + C/I + P/L. 편집 가능
+#   out/SY-2026-0001_CI.pdf          Commercial Invoice 1장
+#   out/SY-2026-0001_PL.pdf          Packing List 1장
+
+python3 automation/generate.py <file.json> -o out/ --no-pdf    # xlsx 만
 ```
+
+### 서류 생성 방식
+
+`generate.py` 는 **레이아웃을 그리지 않는다.** `forms/수출서류_상업송장_포장명세서.xlsx` 템플릿의
+`[입력]` 시트 좌표에 값만 써넣고, 서식/수식/인쇄설정은 템플릿이 갖고 있다.
+
+```
+build_template.py ──▶ forms/수출서류_상업송장_포장명세서.xlsx   (템플릿)
+                                    │
+거래 데이터 JSON ──▶ generate.py ──▶ [입력] 시트를 채움
+                                    │
+                                    ├─▶ {invoice}_수출서류.xlsx
+                                    └─▶ soffice → PDF → 제목으로 페이지 분리 → CI.pdf / PL.pdf
+```
+
+레이아웃을 고치려면 **`build_template.py` 를 고치고 다시 돌릴 것.** xlsx 를 직접 편집하면
+다음 생성 때 덮어써진다. 품목은 최대 15행이고, 늘리려면 `build_template.py` 의 `품목_끝` 을 조정한다.
+
+PDF 는 LibreOffice 가 변환 시점에 수식을 계산하므로 별도 recalc 가 필요 없다. 다만 시트를
+숨겨도 PDF 변환에서 제외되지 않아, 워크북 전체를 변환한 뒤 **각 페이지의 제목**(`COMMERCIAL
+INVOICE` / `PACKING LIST`)으로 페이지를 갈라 문서별 PDF 를 만든다.
 
 기준일을 바꿔 적재기한을 시뮬레이션할 수 있다.
 
@@ -159,8 +187,9 @@ python3 automation/parse_declaration.py 필증.pdf --check 송장.json
 
 | 항목 | 상태 |
 |---|---|
-| `generate.py` 의 수식 계산값 | openpyxl 은 수식 문자열만 쓴다. 엑셀에서 열면 자동 계산되지만, **프로그램으로 값을 읽으려면 recalc 가 필요** |
-| PDF 출력 | 미구현. LibreOffice 변환 또는 별도 렌더러 필요 |
+| `generate.py` 의 수식 계산값 | openpyxl 은 수식 문자열만 쓴다. 엑셀에서 열면 자동 계산되지만, **프로그램으로 값을 읽으려면 recalc 가 필요.** PDF 는 영향 없음 |
+| PDF 출력 | **구현.** soffice + poppler 필요. 없으면 xlsx 만 만들고 넘어간다 |
+| 품목 행 수 | 15행 고정. 초과하면 오류로 중단됨 |
 | 원산지증명서 생성 | 협정별 서식이 달라 미구현. [공식서식](../forms/공식서식/) 참고 |
 | 수출신고필증 파싱 | **구현.** 실제 발급본으로 검증 완료. 스캔 이미지 PDF 는 미지원(OCR 필요) |
 | 공휴일표 | `data/공휴일.csv` 2025~2027. 음력 기반(설/추석/부처님오신날)은 `[검증]` 표시. **연 1회 갱신 필요** |
@@ -169,6 +198,6 @@ python3 automation/parse_declaration.py 필증.pdf --check 송장.json
 
 우선순위 제안.
 
-1. **PDF 출력** — 바이어에게 바로 보낼 수 있는 형태
-2. **통계부호 검증 규칙** — 수집한 532개 코드값으로 필증의 코드 유효성 자동 확인
+1. **통계부호 검증 규칙** — 수집한 532개 코드값으로 필증의 코드 유효성 자동 확인
+2. **원산지증명서 생성** — 협정별 서식 대응
 3. 거래 데이터 저장소 (지금은 JSON 파일 단위)
