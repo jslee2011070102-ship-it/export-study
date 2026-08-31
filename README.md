@@ -31,6 +31,24 @@
 | [docs/08_운송서류_BL.md](docs/08_운송서류_BL.md) | Master vs House B/L 판별 4법 / Surrender / D/O 흐름 |
 | [docs/09_대금결제_신용장.md](docs/09_대금결제_신용장.md) | T/T / 추심 / 신용장 2대 원칙 / 환어음 / 외국환거래법 |
 
+## 문서자동화 (automation/)
+
+거래 데이터 하나로 서류를 생성하고, 서류를 만들기 전에 사고를 잡는 프로토타입.
+
+```bash
+python3 automation/validate.py automation/samples/sample.json   # 정합성 검증
+python3 automation/generate.py automation/samples/sample.json -o out/   # C/I + P/L 생성
+```
+
+| 파일 | 내용 |
+|---|---|
+| [automation/README.md](automation/README.md) | 규칙 목록 / 사용법 / 한계 |
+| `automation/schema.json` | 거래 마스터 데이터 스키마 |
+| `automation/validate.py` | 검증 엔진 — 인코텀즈/품목/당사자/적재기한/FTA/결제 |
+| `automation/generate.py` | JSON → Commercial Invoice + Packing List |
+
+검증 엔진은 **적재기한 D-day 계산(관세법 §251)**, **FTA 발급형식 불일치**, **HS 코드별 원산지결정기준 자동 조회**까지 수행함.
+
 ## 양식 (forms/)
 
 | 파일 | 내용 |
@@ -40,6 +58,7 @@
 | `forms/오퍼시트_Offer_Sheet.xlsx` | Offer Sheet 템플릿 |
 | `forms/BOM_원재료명세서.xlsx` | FTA 원산지판정용 BOM. 비원산지 비중 자동 계산 |
 | `forms/공식서식/` | 원산지소명서 / 원산지(포괄)확인서 등 법정 별지서식 8종 (hwp+pdf) |
+| `automation/` | 검증 엔진 + 서류 생성기 + 스키마 |
 
 ## 데이터
 

@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "수출 거래 마스터 데이터",
+  "description": "상업송장을 단일 원천으로 두고 포장명세서/수출신고 참고자료/원산지증명 신청자료를 파생시키기 위한 스키마. 필드 구성은 forms/수출서류_상업송장_포장명세서.xlsx 의 [입력] 시트와 1:1 대응한다.",
+  "type": "object",
+  "required": ["거래", "수출자", "수입자", "품목"],
+  "properties": {
+    "거래": {
+      "type": "object",
+      "required": ["invoice_no", "invoice_date", "가격조건", "결제조건", "통화", "원산지"],
+      "properties": {
+        "invoice_no":   {"type": "string", "description": "송장번호"},
+        "invoice_date": {"type": "string", "format": "date"},
+        "po_no":        {"type": "string"},
+        "가격조건":      {"type": "string", "description": "인코텀즈 + 지정장소. 예) FOB BUSAN"},
+        "인코텀즈버전":   {"type": "string", "default": "Incoterms(R) 2020"},
+        "결제조건":      {"type": "string"},
+        "결제방법코드":   {"type": "string", "enum": ["TT","CD","DA","DP","LS","LU","LH","GN","GO","PT","WK"],
+                         "description": "수출신고필증 결제방법. 코드값은 관세청 통계부호표 기준"},
+        "통화":         {"type": "string", "pattern": "^[A-Z]{3}$"},
+        "원산지":        {"type": "string"},
+        "선적항":        {"type": "string"},
+        "도착항":        {"type": "string"},
+        "최종목적지":     {"type": "string"},
+        "선박명":        {"type": "string", "default": "T.B.A."},
+        "출항예정일":     {"type": "string", "default": "T.B.A."},
+        "운임":         {"type": "number", "description": "CFR/CIF 인 경우 필수. FOB 환산에 사용"},
+        "보험료":        {"type": "number", "description": "CIF 인 경우 필수"}
+      }
+    },
+    "수출자": {"$ref": "#/$defs/당사자"},
+    "수입자": {"$ref": "#/$defs/당사자"},
+    "착화통지처": {"type": "string", "default": "SAME AS CONSIGNEE"},
+    "포장": {
+      "type": "object",
+      "properties": {
+        "포장단위": {"type": "string", "default": "CTNS"},
+        "총부피_CBM": {"type": "number"}
+      }
+    },
+    "품목": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["품명", "수량", "단위", "단가"],
+        "properties": {
+          "품명":    {"type": "string", "minLength": 4,
+                     "description": "HS 분류가 가능한 수준. PARTS 등 모호한 표기 금지"},
+          "규격":    {"type": "string"},
+          "hs_code": {"type": "string", "pattern": "^\\d{4}(\\.\\d{2}){0,2}$"},
+          "수량":    {"type": "number", "exclusiveMinimum": 0},
+          "단위":    {"type": "string"},
+          "단가":    {"type": "number", "exclusiveMinimum": 0},
+          "순중량_kg": {"type": "number", "minimum": 0},
+          "총중량_kg": {"type": "number", "minimum": 0},
+          "포장수량":  {"type": "integer", "minimum": 0}
+        }
+      }
+    },
+    "원산지증명": {
+      "type": "object",
+      "description": "FTA 특혜를 적용하는 경우",
+      "properties": {
+        "적용협정":   {"type": "string", "description": "예) 한-베트남 FTA"},
+        "발급형식":   {"type": "string", "enum": ["기관발급", "자율발급"]},
+        "인증수출자번호": {"type": "string"}
+      }
+    },
+    "통관": {
+      "type": "object",
+      "properties": {
+        "물품소재지":        {"type": "string", "description": "실제 물품이 있는 장소. 사업장 주소가 아님"},
+        "적재예정보세구역":   {"type": "string"},
+        "수출신고수리일":     {"type": "string", "format": "date",
+                            "description": "적재기한 계산의 기산일 (관세법 제251조: 수리일부터 30일)"},
+        "제조자":           {"type": "string", "description": "미상 처리 시 FTA C/O 발급 곤란 + 환급 제한"}
+      }
+    }
+  },
+  "$defs": {
+    "당사자": {
+      "type": "object",
+      "required": ["상호"],
+      "properties": {
+        "상호":     {"type": "string"},
+        "주소1":    {"type": "string"},
+        "주소2":    {"type": "string"},
+        "담당자":    {"type": "string"},
+        "통관고유부호":  {"type": "string"},
+        "해외거래처부호": {"type": "string"}
+      }
+    }
+  }
+}

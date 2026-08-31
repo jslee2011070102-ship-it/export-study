@@ -1,0 +1,49 @@
+{
+  "거래": {
+    "invoice_no": "SY-2026-0001",
+    "invoice_date": "2026-08-31",
+    "po_no": "PO-8842",
+    "가격조건": "FOB BUSAN",
+    "인코텀즈버전": "Incoterms(R) 2020",
+    "결제조건": "T/T 30% in advance, 70% after B/L",
+    "결제방법코드": "TT",
+    "통화": "USD",
+    "원산지": "REPUBLIC OF KOREA",
+    "선적항": "BUSAN, KOREA",
+    "도착항": "HO CHI MINH, VIETNAM",
+    "최종목적지": "HO CHI MINH, VIETNAM",
+    "선박명": "T.B.A.",
+    "출항예정일": "T.B.A."
+  },
+  "수출자": {
+    "상호": "SY COSMETICS CO., LTD.",
+    "주소1": "123, TEHERAN-RO, GANGNAM-GU",
+    "주소2": "SEOUL, 06234, REPUBLIC OF KOREA",
+    "담당자": "J.S. LEE / +82-2-1234-5678",
+    "통관고유부호": "1234567890123"
+  },
+  "수입자": {
+    "상호": "ABC TRADING CO., LTD.",
+    "주소1": "456 NGUYEN HUE STREET, DISTRICT 1",
+    "주소2": "HO CHI MINH CITY, VIETNAM",
+    "담당자": "MR. TRAN / +84-28-1234-5678",
+    "해외거래처부호": "VN1234567"
+  },
+  "착화통지처": "SAME AS CONSIGNEE",
+  "포장": { "포장단위": "CTNS", "총부피_CBM": 2.45 },
+  "품목": [
+    { "품명": "FACIAL CLEANSING FOAM 150ML", "규격": "MODEL SY-CF150", "hs_code": "3304.99",
+      "수량": 1200, "단위": "PCS", "단가": 3.5,
+      "순중량_kg": 180, "총중량_kg": 210.5, "포장수량": 50 },
+    { "품명": "MOISTURIZING TONER 200ML", "규격": "MODEL SY-MT200", "hs_code": "3304.99",
+      "수량": 800, "단위": "PCS", "단가": 4.2,
+      "순중량_kg": 160, "총중량_kg": 188.0, "포장수량": 40 }
+  ],
+  "원산지증명": { "적용협정": "한-베트남 FTA", "발급형식": "기관발급" },
+  "통관": {
+    "물품소재지": "경기도 화성시 동탄산단 5길 12 (제2공장)",
+    "적재예정보세구역": "03012345",
+    "수출신고수리일": "2026-08-25",
+    "제조자": "SY COSMETICS CO., LTD."
+  }
+}
