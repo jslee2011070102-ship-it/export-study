@@ -156,13 +156,13 @@ footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--rule);font-si
 
 <div class="wrap">
 <header>
-  <div class="eyebrow">진행 경과 · 2026-08-31</div>
+  <div class="eyebrow">진행 경과 · 2026-08-31 · 2차</div>
   <h1>수출설명서 구축 경과</h1>
-  <p class="lede">무역전문채널 무꿈사TV 전수 분석에서 시작해, 수출 초보자용 설명서 초안과 실무 양식, 그리고 법령 원문 대조까지 마친 상태입니다.</p>
+  <p class="lede">무역전문채널 무꿈사TV 전수 분석에서 시작해, 설명서 초안 15개 장, 실무 양식, 법령 원문 대조, 그리고 문서작업 자동화 프로토타입까지 마쳤습니다.</p>
   <div class="meta">
     <span>저장소 <b>jslee2011070102-ship-it/export-study</b></span>
     <span>브랜치 <b class="mono">claude/export-channel-analysis-4t6j34</b></span>
-    <span>커밋 <b class="mono">11</b></span>
+    <span>커밋 <b class="mono">14</b></span>
   </div>
 
   <div class="ledger">
@@ -170,7 +170,7 @@ footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--rule);font-si
     <div class="cell"><span class="n">145<small>편</small></span><div class="k">수출 관련 (36시간)</div></div>
     <div class="cell"><span class="n">64<small>편</small></span><div class="k">자막 62만자</div></div>
     <div class="cell"><span class="n">141<small>건</small></span><div class="k">연계 블로그</div></div>
-    <div class="cell"><span class="n">14.3<small>만자</small></span><div class="k">작성 문서</div></div>
+    <div class="cell"><span class="n">4,831<small>행</small></span><div class="k">FTA 원산지기준</div></div>
   </div>
 </header>
 
@@ -178,9 +178,9 @@ footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--rule);font-si
   <h2>산출물 <span class="tag">Deliverables</span></h2>
   <div class="stack">
     <div class="item">
-      <div class="t">수출설명서 초안 — 14개 장 + 부록 4종</div>
+      <div class="t">수출설명서 초안 — 15개 장 + 부록 4종</div>
       <div class="d">첫 수출 1건을 스스로 끝낼 수 있는 구성. 각 장은 "이 장이 끝나면 무엇이 손에 남는가"로 시작하고, 수출자가 직접 할 일과 관세사·포워더에게 넘길 일을 구분한 뒤 체크리스트로 마무리합니다.</div>
-      <div class="f">manual/ · 00 전체흐름 ~ 13 사후관리 · 부록 A~D</div>
+      <div class="f">manual/ · 00 전체흐름 ~ 14 무역보험 · 부록 A~D</div>
     </div>
     <div class="item">
       <div class="t">실무 양식 3종 + 법정 별지서식 8종</div>
@@ -191,6 +191,11 @@ footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--rule);font-si
       <div class="t">분석 문서 12종</div>
       <div class="d">채널 구조 분석, 수출 관련 145편 전수 목록, 수출 지식맵, 인코텀즈·운송서류·대금결제·원산지 심화 정리, 법령 검증 결과.</div>
       <div class="f">docs/ · 01 채널개요 ~ 12 FTA 원산지결정기준</div>
+    </div>
+    <div class="item">
+      <div class="t">문서작업 자동화 프로토타입</div>
+      <div class="d">거래 데이터 하나로 Commercial Invoice 와 Packing List 를 생성하고, <b>서류를 만들기 전에 사고를 잡는 검증 엔진</b>입니다. 적재기한 D-day 계산, FTA 발급형식 불일치 탐지, HS 코드별 원산지결정기준 자동 조회까지 수행합니다.</div>
+      <div class="f">automation/ · validate.py · generate.py · schema.json</div>
     </div>
     <div class="item">
       <div class="t">재사용 가능한 데이터셋</div>
@@ -251,6 +256,12 @@ footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--rule);font-si
   </div>
 
   <div class="find">
+    <h3>전략물자 상황허가 사유와 무역사기 신호가 겹침</h3>
+    <p>대외무역법이 열거한 상황허가 판단사유 13가지 중 상당수가 사기 위험신호와 같습니다. 최종용도 정보 기피, 통상 범위를 벗어난 가격·납기·수송경로, 최종수하인이 운송업자인 경우.</p>
+    <div class="why">수상한 거래는 <b>사기이거나 전략물자 문제이거나 둘 다</b>일 수 있습니다. 전략물자 무허가 수출은 국제적 확산 목적이면 <b>7년 이하 징역 또는 물품가격 5배 이하 벌금</b>입니다.</div>
+  </div>
+
+  <div class="find">
     <h3>DDP 에는 양하의무가 없음</h3>
     <p>DAP → DPU → DDP 순으로 의무가 커진다고 오해하기 쉽지만, DDP 는 DPU 가 아니라 <b>DAP 에 통관의무가 더해진 것</b>입니다.</p>
     <div class="why">인코텀즈 11개 규칙 중 매도인에게 양하의무가 있는 것은 <b>DPU 하나뿐</b>입니다.</div>
@@ -274,6 +285,26 @@ footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--rule);font-si
 </section>
 
 <section>
+  <h2>자동화 <span class="tag">Automation</span></h2>
+  <p>원래 목표였던 문서작업 자동화의 첫 조각입니다. 거래 데이터 JSON 하나에서 두 서류가 나오고, 만들기 전에 규칙 엔진이 사고를 잡습니다.</p>
+
+  <div class="tw"><table>
+    <thead><tr><th>규칙군</th><th>잡아내는 것</th><th>근거</th></tr></thead>
+    <tbody>
+      <tr><td class="num">INCO</td><td>지정장소 누락 · CIF인데 운임/보험료 없음 · 2020 미표기</td><td>인코텀즈 2020</td></tr>
+      <tr><td class="num">ITEM</td><td>HS 분류 불가한 품명 · 총중량 &lt; 순중량</td><td>실무 함정 03·07</td></tr>
+      <tr><td class="num">PARTY</td><td>해외거래처부호 누락 · 상호 대소문자 혼입</td><td>실무 함정 05</td></tr>
+      <tr><td class="num">CUS</td><td>물품소재지 누락 · 제조자 미상</td><td>고시 §4 · 실무 함정 01·04</td></tr>
+      <tr><td class="num">LOAD</td><td><b>적재기한 D-day 계산</b> · D-7 경고 · 기한 경과</td><td>관세법 §251</td></tr>
+      <tr><td class="num">CO</td><td><b>FTA 발급형식 불일치</b> · 6천유로 · HS별 기준 자동 조회</td><td>FTA특례법 시행규칙 §7</td></tr>
+      <tr><td class="num">PAY</td><td>전액 사후송금 감지 · 신용장 Master B/L 안내</td><td>3장 · 10장</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="note"><b>동작 확인했습니다.</b> 정상 데이터는 오류 0으로 통과하고, 일부러 망가뜨린 데이터에서 <b>9개 오류를 정확히 전부</b> 잡았습니다. 생성된 서류도 값을 검증했습니다 — 1,200 × 3.50 = 4,200 / 총액 USD 7,560.00 / 포장 90 CTNS / N.W. 340kg.</div>
+</section>
+
+<section>
   <h2>남은 일 <span class="tag">Next</span></h2>
 
   <h3>확인이 더 필요한 것</h3>
@@ -283,19 +314,18 @@ footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--rule);font-si
     <li><b>검사비용 환급 신청기한</b> — 관세법 §173③ 은 지원 근거만 규정합니다. 신청기한은 관세청 고시 사항입니다.</li>
   </ul>
 
-  <h3>채널에 아예 없어 외부 보강이 필요한 영역</h3>
+  <h3>이번에 메운 공백</h3>
   <ul>
-    <li><b>무역보험 (K-SURE 단기수출보험)</b> — T/T 가 실무 표준인데 그 신용위험 대응책이 통째로 빠져 있습니다. 설명서로선 가장 큰 공백입니다.</li>
-    <li><b>전략물자 판정·수출허가</b> — 기계·전자·화학 품목이면 반드시 필요합니다.</li>
-    <li><b>수출계약서 작성 / 바이어 발굴 / 수출바우처</b></li>
-    <li><b>인코텀즈 개별 규칙</b> — 채널에 EXW·FCA·CIF·DAP 4개만 있습니다. FAS 는 단독 콘텐츠가 전무합니다.</li>
+    <li><b>무역보험</b> — 14장 신설. 무역보험법 원문 기준. 보험에 가입하지 않은 건도 <b>채권추심을 공사에 위임</b>할 수 있다는 조항(§53③)까지 확인했습니다.</li>
+    <li><b>전략물자</b> — 7장 대폭 확충. 4종 허가, 상황허가 판단사유 13가지 전문, 전문판정 절차, 벌칙. <b>전략물자관리원이 무역안보관리원으로 바뀐 것</b>도 확인해 부록D를 고쳤습니다.</li>
   </ul>
 
-  <h3>다음 단계 후보</h3>
+  <h3>아직 남은 것</h3>
   <ul>
-    <li>공백 영역 외부 소스 리서치 후 설명서 보강</li>
-    <li>C/I 입력 스키마를 JSON 으로 정의하고 PDF 생성기 프로토타입 제작</li>
-    <li>수출신고필증 파서 + 적재기한 알림 (관세법 §251 의 30일 관리)</li>
+    <li><b>무역보험 상품 구성·부보율·요율</b> — 법률에 열거되지 않고 공사가 정하는 구조라(무역보험법 §3) K-SURE 현행 자료가 필요합니다. 사이트 접근이 막혀 못 채웠습니다.</li>
+    <li><b>수출계약서 표준안 / 바이어 발굴 / 수출바우처</b></li>
+    <li><b>인코텀즈 개별 규칙</b> — 채널에 EXW·FCA·CIF·DAP 4개만 있습니다. ICC 원문 기준으로 나머지를 써야 합니다.</li>
+    <li><b>수출신고필증 파서</b> — 실제 면장 샘플이 있어야 필드 좌표를 잡을 수 있습니다. 확보되면 적재기한 관리가 완전 자동화됩니다.</li>
   </ul>
 </section>
 
@@ -310,6 +340,6 @@ footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--rule);font-si
 </section>
 
 <footer>
-  원자료 — 무역전문채널 무꿈사TV (정재환 관세사) · 법령 원문 — 국가법령정보센터 OPEN API · 검증일 2026-08-31
+  원자료 — 무역전문채널 무꿈사TV (정재환 관세사) · 법령 원문 — 국가법령정보센터 OPEN API · 관세법 / 대외무역법 / 외국환거래법 / 무역보험법 / 환급특례법 / FTA특례법 시행규칙 / 수출 및 반송통관에 관한 고시 · 검증일 2026-08-31
 </footer>
 </div>
