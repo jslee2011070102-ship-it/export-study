@@ -70,7 +70,18 @@
       "properties": {
         "적용협정":   {"type": "string", "description": "예) 한-베트남 FTA"},
         "발급형식":   {"type": "string", "enum": ["기관발급", "자율발급"]},
-        "인증수출자번호": {"type": "string"}
+        "인증수출자번호": {"type": "string"},
+        "원산지영문":  {"type": "string", "default": "the Republic of Korea",
+                      "description": "원산지신고서 문안에 들어갈 원산지 표기"},
+        "원산지약어":  {"type": "string", "default": "KR", "description": "ISO 2자리"},
+        "작성장소":   {"type": "string", "description": "원산지증명서 작성 장소. 상업서류에 있으면 생략 가능"},
+        "작성일":     {"type": "string", "format": "date"},
+        "서명자":     {"type": "string"},
+        "직위":       {"type": "string"},
+        "생산자":     {"$ref": "#/$defs/당사자", "description": "한-미 C/O 제3란. 수출자와 다르면 기재"},
+        "포괄증명기간": {"type": "string", "description": "한-미 원산지포괄증명. 예) 2026-01-01 ~ 2026-12-31"},
+        "원산지결정기준코드": {"type": "string", "description": "한-미 C/O 제7란 Preference Criterion"},
+        "비고":       {"type": "string", "description": "한-미 C/O 제10란 Remarks"}
       }
     },
     "통관": {

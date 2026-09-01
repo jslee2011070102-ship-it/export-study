@@ -101,6 +101,27 @@ def soffice():
     return None
 
 
+def 통째로PDF(xlsx, dst, timeout=300):
+    """시트가 하나인 워크북을 그대로 PDF 로 바꾼다. 성공하면 페이지 수를 돌려준다."""
+    exe = soffice()
+    if not exe:
+        print('  soffice 가 없어 PDF 를 건너뛴다. (apt-get install libreoffice-calc)')
+        return None
+    with tempfile.TemporaryDirectory() as tmp:
+        r = subprocess.run([exe, '--headless', '-env:UserInstallation=file://' + tmp + '/profile',
+                            '--convert-to', 'pdf', '--outdir', tmp, os.path.abspath(xlsx)],
+                           capture_output=True, text=True, timeout=timeout)
+        src = os.path.join(tmp, os.path.splitext(os.path.basename(xlsx))[0] + '.pdf')
+        if not os.path.exists(src):
+            print(f'  PDF 변환 실패: {(r.stderr or r.stdout).strip()[:200]}')
+            return None
+        shutil.copyfile(src, dst)
+        if shutil.which('pdfinfo'):
+            out = subprocess.run(['pdfinfo', dst], capture_output=True, text=True).stdout
+            return int(out.split('Pages:')[1].split()[0])
+        return 1
+
+
 def pdf만들기(xlsx, outdir, invoice, timeout=300):
     """워크북 전체를 PDF 로 변환한 뒤, 시트별 제목으로 페이지를 갈라 문서별 PDF 를 만든다.
 
